@@ -41,9 +41,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeEventListeners() {
     // Tab navigation
     document.querySelectorAll('.tab-button').forEach(button => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
             const tab = button.dataset.tab;
             switchTab(tab);
+            // Force immediate repaint
+            window.requestAnimationFrame(() => {
+                void button.offsetHeight;
+            });
         });
     });
 
@@ -96,12 +102,16 @@ function initializeEventListeners() {
 function switchTab(tab) {
     appState.currentTab = tab;
     
-    // Update tab buttons immediately
+    // Force immediate repaint by reading offsetHeight
     document.querySelectorAll('.tab-button').forEach(button => {
         if (button.dataset.tab === tab) {
+            button.classList.remove('active');
+            void button.offsetHeight; // Force reflow
             button.classList.add('active');
+            button.style.borderBottom = '3px solid rgb(4, 61, 85)';
         } else {
             button.classList.remove('active');
+            button.style.borderBottom = '';
         }
     });
     
@@ -214,7 +224,7 @@ function createProductBanner() {
     banner.innerHTML = `
         <div class="product-banner-content">
             <div class="product-banner-text">
-                Get the One™ and get clear, actionable data about your inflammation
+                Get the COR One™ and get clear, actionable data about your inflammation
             </div>
             <div class="product-banner-arrow">
                 <i data-lucide="arrow-right"></i>
@@ -455,6 +465,20 @@ function updateStackUI() {
     // Update summary
     updateStackSummary();
     
+    // Add banner at the bottom of My Stack page
+    const stackContainer = document.querySelector('.stack-container');
+    if (stackContainer) {
+        // Remove any existing banner first
+        const existingBanner = stackContainer.querySelector('.product-banner');
+        if (existingBanner) {
+            existingBanner.remove();
+        }
+        // Add new banner
+        const banner = createProductBanner();
+        banner.style.marginTop = '3rem';
+        stackContainer.appendChild(banner);
+    }
+    
     // Update icons
     lucide.createIcons();
 }
@@ -616,6 +640,11 @@ function renderTemplates() {
         const element = createTemplateElement(template);
         container.appendChild(element);
     });
+    
+    // Add banner at the end
+    const banner = createProductBanner();
+    banner.style.marginTop = '3rem';
+    container.appendChild(banner);
     
     lucide.createIcons();
 }
