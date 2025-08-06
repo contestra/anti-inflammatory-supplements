@@ -96,26 +96,32 @@ function initializeEventListeners() {
 function switchTab(tab) {
     appState.currentTab = tab;
     
-    // Update tab buttons
+    // Update tab buttons immediately
     document.querySelectorAll('.tab-button').forEach(button => {
-        button.classList.toggle('active', button.dataset.tab === tab);
+        if (button.dataset.tab === tab) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
     });
     
-    // Update tab panels
+    // Update tab panels immediately
     document.querySelectorAll('.tab-panel').forEach(panel => {
-        panel.classList.toggle('active', panel.id === `${tab}-tab`);
+        if (panel.id === `${tab}-tab`) {
+            panel.classList.add('active');
+        } else {
+            panel.classList.remove('active');
+        }
     });
     
-    // Re-render supplements when switching back to browse tab
+    // Render content synchronously to avoid delays
     if (tab === 'browse') {
         renderSupplements();
+    } else if (tab === 'templates') {
+        renderTemplates();
+    } else if (tab === 'mystack') {
+        updateStackUI();
     }
-    
-    // Update stack count
-    updateStackCount();
-    
-    // Update icons after DOM changes
-    lucide.createIcons();
 }
 
 // View switching
@@ -175,22 +181,22 @@ function renderSupplements() {
     // Update container class based on view
     container.className = appState.currentView === 'grid' ? 'supplements-grid' : 'supplements-list';
     
-    // Render each supplement with product banners
+    // Render each supplement
     filteredSupplements.forEach((supplement, index) => {
         const element = createSupplementElement(supplement);
         container.appendChild(element);
-        
-        // Add product banner after every 6 supplements
-        if ((index + 1) % 6 === 0) {
-            const banner = createProductBanner();
-            container.appendChild(banner);
-        }
     });
     
-    // Also add a banner at the end if:
-    // - There are supplements shown AND
-    // - The last banner wasn't just added (not divisible by 6)
-    if (filteredSupplements.length > 0 && filteredSupplements.length % 6 !== 0) {
+    // Add a single banner after 6 items or at the end if fewer than 6
+    if (filteredSupplements.length >= 6) {
+        // Insert banner after the 6th item
+        const sixthItem = container.children[5];
+        if (sixthItem) {
+            const banner = createProductBanner();
+            sixthItem.insertAdjacentElement('afterend', banner);
+        }
+    } else if (filteredSupplements.length > 0) {
+        // If less than 6 items, add banner at the end
         const banner = createProductBanner();
         container.appendChild(banner);
     }
@@ -418,7 +424,7 @@ function removeFromStack(supplementId) {
 function updateStackCount() {
     const countElement = document.querySelector('.stack-count');
     if (countElement) {
-        countElement.textContent = appState.myStack.length;
+        countElement.textContent = `(${appState.myStack.length})`;
     }
 }
 
