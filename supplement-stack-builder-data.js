@@ -1,0 +1,537 @@
+// Supplement data
+const supplements = [
+  {
+    id: 'omega3',
+    name: 'Fish Oil (EPA/DHA)',
+    category: 'Omega-3',
+    description: 'Essential fatty acids with powerful anti-inflammatory effects',
+    evidence: { score: 92, studies: 156 },
+    recommendedDose: '2-4g EPA/DHA daily',
+    timing: 'With meals',
+    safetyRating: 5,
+    antiInflammatoryScore: 9,
+    antiInflammatoryPotential: 9.0,
+    costPerDay: 0.75,
+    pillsPerDay: 2,
+    benefits: ['Reduces inflammatory markers', 'Supports heart health', 'Improves joint health'],
+    sideEffects: ['Fishy aftertaste', 'Mild GI upset'],
+    forms: ['Fish oil', 'Krill oil', 'Algae oil'],
+    interactions: [],
+    evidenceBreakdown: {
+      studyCount: 156,
+      studyTypes: ['15 meta-analyses', '89 RCTs', '52 observational studies'],
+      effectSize: 'Large effect on inflammation markers (CRP reduction 15-30%)',
+      mechanism: 'EPA/DHA conversion to specialized pro-resolving mediators clearly established',
+      safety: 'Very safe, mild blood thinning effect at high doses',
+      bestStudy: 'Meta-analysis inflammatory markers (2020) - significant CRP and IL-6 reduction'
+    }
+  },
+  {
+    id: 'curcumin',
+    name: 'Curcumin',
+    category: 'Polyphenols',
+    description: 'Active compound from turmeric with potent anti-inflammatory properties',
+    evidence: { score: 90, studies: 127 },
+    recommendedDose: '500-1000mg with piperine',
+    timing: 'With meals',
+    safetyRating: 5,
+    antiInflammatoryScore: 9,
+    antiInflammatoryPotential: 9.1,
+    costPerDay: 0.65,
+    pillsPerDay: 2,
+    benefits: ['Inhibits NF-κB pathway', 'Reduces joint inflammation', 'Antioxidant effects'],
+    sideEffects: ['Mild GI upset', 'May stain'],
+    forms: ['Standard extract', 'BCM-95', 'Meriva', 'Longvida'],
+    interactions: ['anticoagulants'],
+    evidenceBreakdown: {
+      studyCount: 127,
+      studyTypes: ['12 meta-analyses', '78 RCTs', '37 clinical studies'],
+      effectSize: 'Large effect on inflammatory markers (NF-κB suppression 40-60%)',
+      mechanism: 'Curcumin COX-2 and NF-κB inhibition pathways well-documented',
+      safety: 'Generally safe, may increase bleeding risk, avoid before surgery',
+      bestStudy: 'Meta-analysis arthritis (2021) - significant pain reduction vs placebo'
+    }
+  },
+  {
+    id: 'vitaminD',
+    name: 'Vitamin D3',
+    category: 'Vitamins',
+    description: 'Essential vitamin that modulates immune response and inflammation',
+    evidence: { score: 87, studies: 156 },
+    recommendedDose: '2000-4000 IU daily',
+    timing: 'With fat-containing meal',
+    safetyRating: 5,
+    antiInflammatoryScore: 7,
+    antiInflammatoryPotential: 7.4,
+    costPerDay: 0.15,
+    pillsPerDay: 1,
+    benefits: ['Immune modulation', 'Reduces inflammatory cytokines', 'Bone health'],
+    sideEffects: ['None at recommended doses'],
+    forms: ['D3 (cholecalciferol)', 'D2 (ergocalciferol)'],
+    interactions: [],
+    evidenceBreakdown: {
+      studyCount: 156,
+      studyTypes: ['15 meta-analyses', '89 RCTs', '52 observational studies'],
+      effectSize: 'Large effect on immune function and bone health',
+      mechanism: 'Vitamin D receptor signaling pathways well-established',
+      safety: 'Very safe at recommended doses, monitor levels',
+      bestStudy: 'Meta-analysis immune function (2021) - reduced respiratory infections'
+    }
+  },
+  {
+    id: 'magnesium',
+    name: 'Magnesium',
+    category: 'Minerals',
+    description: 'Essential mineral that helps regulate inflammatory response',
+    evidence: { score: 79, studies: 67 },
+    recommendedDose: '200-400mg daily',
+    timing: 'Evening or split doses',
+    safetyRating: 5,
+    antiInflammatoryScore: 7,
+    antiInflammatoryPotential: 6.8,
+    costPerDay: 0.25,
+    pillsPerDay: 1,
+    benefits: ['Reduces CRP levels', 'Muscle relaxation', 'Better sleep'],
+    sideEffects: ['Loose stools at high doses'],
+    forms: ['Glycinate', 'Citrate', 'Malate', 'Threonate'],
+    interactions: [],
+    evidenceBreakdown: {
+      studyCount: 67,
+      studyTypes: ['6 meta-analyses', '45 RCTs', '16 observational studies'],
+      effectSize: 'Large effect on sleep and muscle function',
+      mechanism: 'Cofactor role in hundreds of enzymatic reactions',
+      safety: 'Very safe, diarrhea at high doses',
+      bestStudy: 'Meta-analysis sleep quality (2020) - improved sleep duration and quality'
+    }
+  },
+  {
+    id: 'boswellia',
+    name: 'Boswellia Serrata',
+    category: 'Herbs',
+    description: 'Herbal extract that inhibits 5-LOX inflammatory pathway',
+    evidence: { score: 80, studies: 34 },
+    recommendedDose: '300-500mg AKBA daily',
+    timing: 'With meals',
+    safetyRating: 4,
+    antiInflammatoryScore: 8,
+    antiInflammatoryPotential: 8.2,
+    costPerDay: 0.55,
+    pillsPerDay: 2,
+    benefits: ['Joint health', 'Reduces 5-LOX activity', 'GI inflammation'],
+    sideEffects: ['Mild GI upset', 'Rare allergic reactions'],
+    forms: ['5-Loxin', 'ApresFlex', 'Standard extract'],
+    interactions: [],
+    evidenceBreakdown: {
+      studyCount: 34,
+      studyTypes: ['3 meta-analyses', '22 RCTs', '9 clinical studies'],
+      effectSize: 'Large effect on joint inflammation and pain (50-70% improvement)',
+      mechanism: '5-LOX inhibition and boswellic acid anti-inflammatory pathways established',
+      safety: 'Generally safe, rare mild GI upset',
+      bestStudy: 'RCT osteoarthritis (2020) - superior to placebo for joint function'
+    }
+  },
+  {
+    id: 'quercetin',
+    name: 'Quercetin',
+    category: 'Polyphenols',
+    description: 'Flavonoid with anti-inflammatory and antihistamine properties',
+    evidence: { score: 80, studies: 67 },
+    recommendedDose: '500-1000mg daily',
+    timing: 'Empty stomach or with bromelain',
+    safetyRating: 5,
+    antiInflammatoryScore: 8,
+    antiInflammatoryPotential: 7.8,
+    costPerDay: 0.45,
+    pillsPerDay: 2,
+    benefits: ['Reduces histamine', 'Antioxidant', 'Supports immunity'],
+    sideEffects: ['Mild headaches', 'Tingling extremities'],
+    forms: ['Quercetin dihydrate', 'Quercetin phytosome'],
+    interactions: ['antibiotics'],
+    evidenceBreakdown: {
+      studyCount: 67,
+      studyTypes: ['5 meta-analyses', '42 RCTs', '20 clinical studies'],
+      effectSize: 'Moderate to large effect on inflammatory and allergic responses',
+      mechanism: 'Flavonoid mast cell stabilization and NF-κB pathways documented',
+      safety: 'Very safe, rare mild headache',
+      bestStudy: 'RCT allergic rhinitis (2020) - significant symptom improvement'
+    }
+  },
+  {
+    id: 'ginger',
+    name: 'Ginger Extract',
+    category: 'Herbs',
+    description: 'Traditional anti-inflammatory herb that inhibits COX and LOX',
+    evidence: { score: 80, studies: 380 },
+    recommendedDose: '1-2g extract daily',
+    timing: 'With meals',
+    safetyRating: 5,
+    antiInflammatoryScore: 7,
+    antiInflammatoryPotential: 7.0,
+    costPerDay: 0.35,
+    pillsPerDay: 2,
+    benefits: ['Reduces muscle soreness', 'GI support', 'Joint health'],
+    sideEffects: ['Heartburn', 'Mild GI upset'],
+    forms: ['Standardized extract', 'Fresh root', 'Powder'],
+    interactions: ['anticoagulants']
+  },
+  {
+    id: 'nac',
+    name: 'N-Acetylcysteine (NAC)',
+    category: 'Amino Acids',
+    description: 'Precursor to glutathione with anti-inflammatory effects',
+    evidence: { score: 80, studies: 89 },
+    recommendedDose: '600-1200mg daily',
+    timing: 'Empty stomach',
+    safetyRating: 4,
+    antiInflammatoryScore: 8,
+    antiInflammatoryPotential: 8.0,
+    costPerDay: 0.40,
+    pillsPerDay: 2,
+    benefits: ['Antioxidant', 'Liver support', 'Reduces oxidative stress'],
+    sideEffects: ['Mild nausea', 'Sulfur smell'],
+    forms: ['Standard NAC', 'Sustained-release'],
+    interactions: ['nitroglycerin'],
+    evidenceBreakdown: {
+      studyCount: 89,
+      studyTypes: ['6 meta-analyses', '56 RCTs', '27 clinical studies'],
+      effectSize: 'Large effect on oxidative stress and inflammation markers',
+      mechanism: 'Glutathione synthesis and NF-κB inhibition pathways well-established',
+      safety: 'Generally safe, rare nausea at high doses',
+      bestStudy: 'Meta-analysis respiratory conditions (2021) - significant anti-inflammatory effects'
+    }
+  },
+  {
+    id: 'vitaminC',
+    name: 'Vitamin C',
+    category: 'Vitamins',
+    description: 'Antioxidant vitamin that modulates inflammatory response',
+    evidence: { score: 75, studies: 1900 },
+    recommendedDose: '500-1000mg daily',
+    timing: 'Split doses with meals',
+    safetyRating: 5,
+    antiInflammatoryScore: 6,
+    antiInflammatoryPotential: 6.0,
+    costPerDay: 0.20,
+    pillsPerDay: 2,
+    benefits: ['Antioxidant', 'Immune support', 'Collagen synthesis'],
+    sideEffects: ['GI upset at high doses', 'Kidney stones risk'],
+    forms: ['Ascorbic acid', 'Ester-C', 'Liposomal'],
+    interactions: []
+  },
+  {
+    id: 'resveratrol',
+    name: 'Resveratrol',
+    category: 'Polyphenols',
+    description: 'Polyphenol that activates SIRT1 and reduces inflammation',
+    evidence: { score: 73, studies: 420 },
+    recommendedDose: '150-500mg daily',
+    timing: 'With meals',
+    safetyRating: 4,
+    antiInflammatoryScore: 7,
+    antiInflammatoryPotential: 7.0,
+    costPerDay: 0.85,
+    pillsPerDay: 1,
+    benefits: ['Cardiovascular health', 'Anti-aging', 'Neuroprotection'],
+    sideEffects: ['Mild GI upset', 'Interactions with medications'],
+    forms: ['Trans-resveratrol', 'Micronized', 'Pterostilbene'],
+    interactions: ['anticoagulants', 'nsaids']
+  },
+  {
+    id: 'greentea',
+    name: 'Green Tea Extract (EGCG)',
+    category: 'Polyphenols',
+    description: 'Catechins with anti-inflammatory and antioxidant properties',
+    evidence: { score: 77, studies: 890 },
+    recommendedDose: '300-500mg EGCG daily',
+    timing: 'Between meals',
+    safetyRating: 4,
+    antiInflammatoryScore: 6,
+    antiInflammatoryPotential: 6.0,
+    costPerDay: 0.30,
+    pillsPerDay: 1,
+    benefits: ['Metabolic health', 'Antioxidant', 'Fat oxidation'],
+    sideEffects: ['Caffeine effects', 'Liver concerns at high doses'],
+    forms: ['Standardized extract', 'Decaffeinated', 'Matcha'],
+    interactions: ['stimulants']
+  },
+  {
+    id: 'bromelain',
+    name: 'Bromelain',
+    category: 'Enzymes',
+    description: 'Proteolytic enzyme from pineapple with anti-inflammatory effects',
+    evidence: { score: 70, studies: 280 },
+    recommendedDose: '500-1000mg daily',
+    timing: 'Empty stomach',
+    safetyRating: 4,
+    antiInflammatoryScore: 7,
+    antiInflammatoryPotential: 7.0,
+    costPerDay: 0.50,
+    pillsPerDay: 2,
+    benefits: ['Reduces swelling', 'Sinus health', 'Digestive support'],
+    sideEffects: ['Allergic reactions', 'GI upset'],
+    forms: ['2400 GDU/g', 'Combination formulas'],
+    interactions: ['anticoagulants', 'antibiotics']
+  },
+  {
+    id: 'zinc',
+    name: 'Zinc',
+    category: 'Minerals',
+    description: 'Essential mineral that regulates immune and inflammatory response',
+    evidence: { score: 76, studies: 1100 },
+    recommendedDose: '15-30mg daily',
+    timing: 'Empty stomach or bedtime',
+    safetyRating: 4,
+    antiInflammatoryScore: 6,
+    antiInflammatoryPotential: 6.0,
+    costPerDay: 0.15,
+    pillsPerDay: 1,
+    benefits: ['Immune function', 'Wound healing', 'Antioxidant'],
+    sideEffects: ['Nausea on empty stomach', 'Copper depletion'],
+    forms: ['Picolinate', 'Glycinate', 'Citrate'],
+    interactions: ['copper', 'antibiotics']
+  },
+  {
+    id: 'selenium',
+    name: 'Selenium',
+    category: 'Minerals',
+    description: 'Trace mineral that supports antioxidant enzymes',
+    evidence: { score: 68, studies: 450 },
+    recommendedDose: '200mcg daily',
+    timing: 'With meals',
+    safetyRating: 4,
+    antiInflammatoryScore: 5,
+    antiInflammatoryPotential: 5.0,
+    costPerDay: 0.10,
+    pillsPerDay: 1,
+    benefits: ['Thyroid support', 'Antioxidant', 'Immune function'],
+    sideEffects: ['Garlic breath', 'Hair loss at high doses'],
+    forms: ['Selenomethionine', 'Selenium yeast'],
+    interactions: []
+  },
+  {
+    id: 'astaxanthin',
+    name: 'Astaxanthin',
+    category: 'Other',
+    description: 'Powerful carotenoid antioxidant with anti-inflammatory effects',
+    evidence: { score: 73, studies: 28 },
+    recommendedDose: '4-12mg daily',
+    timing: 'With fat-containing meal',
+    safetyRating: 5,
+    antiInflammatoryScore: 8,
+    antiInflammatoryPotential: 7.9,
+    costPerDay: 0.60,
+    pillsPerDay: 1,
+    benefits: ['Skin health', 'Eye health', 'Exercise recovery'],
+    sideEffects: ['Orange skin tint at high doses'],
+    forms: ['Natural from algae', 'Synthetic'],
+    interactions: [],
+    evidenceBreakdown: {
+      studyCount: 28,
+      studyTypes: ['1 meta-analysis', '18 RCTs', '9 observational studies'],
+      effectSize: 'Moderate effect on oxidative stress markers',
+      mechanism: 'Membrane protection clearly demonstrated',
+      safety: 'Very safe, no significant side effects',
+      bestStudy: 'RCT in athletes (2020) - reduced exercise-induced inflammation'
+    }
+  },
+  {
+    id: 'blackseed',
+    name: 'Black Seed Oil',
+    category: 'Herbs',
+    description: 'Traditional remedy with thymoquinone as active compound',
+    evidence: { score: 65, studies: 180 },
+    recommendedDose: '1-2 tsp daily',
+    timing: 'With meals',
+    safetyRating: 4,
+    antiInflammatoryScore: 6,
+    antiInflammatoryPotential: 6.0,
+    costPerDay: 0.40,
+    pillsPerDay: 2,
+    benefits: ['Respiratory health', 'Metabolic support', 'Antimicrobial'],
+    sideEffects: ['GI upset', 'Blood sugar effects'],
+    forms: ['Cold-pressed oil', 'Standardized extract'],
+    interactions: ['diabetes medications']
+  },
+  {
+    id: 'spirulina',
+    name: 'Spirulina',
+    category: 'Other',
+    description: 'Blue-green algae with anti-inflammatory and antioxidant properties',
+    evidence: { score: 64, studies: 250 },
+    recommendedDose: '3-8g daily',
+    timing: 'With meals',
+    safetyRating: 4,
+    antiInflammatoryScore: 5,
+    antiInflammatoryPotential: 5.0,
+    costPerDay: 0.45,
+    pillsPerDay: 6,
+    benefits: ['Nutrient dense', 'Immune support', 'Detoxification'],
+    sideEffects: ['GI upset', 'Detox reactions'],
+    forms: ['Powder', 'Tablets', 'Hawaiian', 'Organic'],
+    interactions: []
+  },
+  {
+    id: 'probiotics',
+    name: 'Probiotics',
+    category: 'Other',
+    description: 'Beneficial bacteria that modulate inflammation through gut health',
+    evidence: { score: 79, studies: 950 },
+    recommendedDose: '10-50 billion CFU daily',
+    timing: 'Empty stomach or bedtime',
+    safetyRating: 5,
+    antiInflammatoryScore: 6,
+    antiInflammatoryPotential: 6.0,
+    costPerDay: 0.55,
+    pillsPerDay: 1,
+    benefits: ['Gut health', 'Immune modulation', 'Mental health'],
+    sideEffects: ['Initial bloating', 'Gas'],
+    forms: ['Multi-strain', 'Spore-based', 'Refrigerated'],
+    interactions: []
+  },
+  {
+    id: 'pqq',
+    name: 'PQQ',
+    category: 'Other',
+    description: 'Mitochondrial support compound with anti-inflammatory effects',
+    evidence: { score: 62, studies: 120 },
+    recommendedDose: '10-20mg daily',
+    timing: 'With breakfast',
+    safetyRating: 4,
+    antiInflammatoryScore: 5,
+    antiInflammatoryPotential: 5.0,
+    costPerDay: 0.70,
+    pillsPerDay: 1,
+    benefits: ['Mitochondrial biogenesis', 'Neuroprotection', 'Energy'],
+    sideEffects: ['Insomnia if taken late', 'Headaches'],
+    forms: ['BioPQQ', 'Standard PQQ'],
+    interactions: []
+  },
+  {
+    id: 'alphalipoic',
+    name: 'Alpha Lipoic Acid',
+    category: 'Other',
+    description: 'Universal antioxidant that reduces inflammatory markers',
+    evidence: { score: 74, studies: 580 },
+    recommendedDose: '300-600mg daily',
+    timing: 'Empty stomach',
+    safetyRating: 4,
+    antiInflammatoryScore: 6,
+    antiInflammatoryPotential: 6.0,
+    costPerDay: 0.35,
+    pillsPerDay: 1,
+    benefits: ['Blood sugar control', 'Neuropathy', 'Antioxidant'],
+    sideEffects: ['Low blood sugar', 'Body odor'],
+    forms: ['R-lipoic acid', 'Standard ALA', 'Sustained release'],
+    interactions: ['diabetes medications']
+  }
+];
+
+// Interaction data
+const interactions = [
+  {
+    supplements: ['omega3', 'ginger'],
+    severity: 'mild',
+    description: 'Both have blood-thinning effects. Monitor if on anticoagulants.'
+  },
+  {
+    supplements: ['omega3', 'resveratrol'],
+    severity: 'mild',
+    description: 'Both may have antiplatelet effects. Use caution with blood thinners.'
+  },
+  {
+    supplements: ['curcumin', 'resveratrol'],
+    severity: 'mild',
+    description: 'Both affect blood clotting. Monitor if taking anticoagulants.'
+  },
+  {
+    supplements: ['curcumin', 'ginger'],
+    severity: 'mild',
+    description: 'Synergistic anti-inflammatory effects. May increase blood-thinning.'
+  },
+  {
+    supplements: ['curcumin', 'bromelain'],
+    severity: 'positive',
+    description: 'Bromelain enhances curcumin absorption. Beneficial combination.'
+  },
+  {
+    supplements: ['quercetin', 'bromelain'],
+    severity: 'positive',
+    description: 'Bromelain improves quercetin absorption. Often combined.'
+  },
+  {
+    supplements: ['vitaminD', 'magnesium'],
+    severity: 'positive',
+    description: 'Magnesium helps activate vitamin D. Beneficial combination.'
+  },
+  {
+    supplements: ['zinc', 'quercetin'],
+    severity: 'positive',
+    description: 'Quercetin acts as zinc ionophore. May enhance zinc benefits.'
+  },
+  {
+    supplements: ['nac', 'vitaminC'],
+    severity: 'positive',
+    description: 'Work synergistically for antioxidant effects.'
+  },
+  {
+    supplements: ['greentea', 'curcumin'],
+    severity: 'positive',
+    description: 'Complementary antioxidant and anti-inflammatory effects.'
+  },
+  {
+    supplements: ['zinc', 'copper'],
+    severity: 'moderate',
+    description: 'Zinc can deplete copper. Consider copper supplementation with long-term zinc use.'
+  },
+  {
+    supplements: ['probiotics', 'antibiotics'],
+    severity: 'moderate',
+    description: 'Take probiotics 2-3 hours after antibiotics to maintain efficacy.'
+  }
+];
+
+// Stack templates
+const stackTemplates = [
+  {
+    id: 'beginner',
+    name: 'Beginner Anti-Inflammatory Stack',
+    description: 'Essential supplements for those new to anti-inflammatory protocols',
+    supplements: ['omega3', 'vitaminD', 'magnesium'],
+    icon: 'heart'
+  },
+  {
+    id: 'joint',
+    name: 'Joint Health Stack',
+    description: 'Targeted support for joint inflammation and mobility',
+    supplements: ['omega3', 'curcumin', 'boswellia', 'ginger'],
+    icon: 'activity'
+  },
+  {
+    id: 'gut',
+    name: 'Gut Health Stack',
+    description: 'Support gut healing and reduce intestinal inflammation',
+    supplements: ['probiotics', 'curcumin', 'zinc', 'quercetin'],
+    icon: 'zap'
+  },
+  {
+    id: 'athletic',
+    name: 'Athletic Recovery Stack',
+    description: 'Reduce exercise-induced inflammation and support recovery',
+    supplements: ['omega3', 'curcumin', 'astaxanthin', 'bromelain', 'magnesium'],
+    icon: 'target'
+  },
+  {
+    id: 'comprehensive',
+    name: 'Comprehensive Anti-Inflammatory Stack',
+    description: 'Full-spectrum approach for maximum anti-inflammatory support',
+    supplements: ['omega3', 'curcumin', 'vitaminD', 'magnesium', 'quercetin', 'resveratrol', 'probiotics'],
+    icon: 'shield'
+  },
+  {
+    id: 'antioxidant',
+    name: 'Antioxidant Power Stack',
+    description: 'Focused on reducing oxidative stress and inflammation',
+    supplements: ['vitaminC', 'vitaminE', 'selenium', 'alphalipoic', 'astaxanthin', 'resveratrol'],
+    icon: 'sun'
+  }
+];
