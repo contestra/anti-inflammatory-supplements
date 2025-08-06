@@ -4,7 +4,7 @@ const appState = {
     currentView: 'grid',
     selectedCategory: 'all',
     searchQuery: '',
-    sortBy: 'evidence',
+    sortBy: 'antiInflammatory',
     myStack: [],
     expandedSupplement: null
 };
@@ -30,6 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderSupplements();
     renderTemplates();
     updateStackUI();
+    
+    // Ensure icons are created after initial render
+    setTimeout(() => {
+        lucide.createIcons();
+    }, 100);
 });
 
 // Event Listeners
@@ -101,6 +106,14 @@ function switchTab(tab) {
         panel.classList.toggle('active', panel.id === `${tab}-tab`);
     });
     
+    // Re-render supplements when switching back to browse tab
+    if (tab === 'browse') {
+        renderSupplements();
+    }
+    
+    // Update stack count
+    updateStackCount();
+    
     // Update icons after DOM changes
     lucide.createIcons();
 }
@@ -134,6 +147,10 @@ function selectCategory(category) {
 // Render supplements
 function renderSupplements() {
     const container = document.getElementById('supplements-container');
+    if (!container) {
+        console.error('Supplements container not found');
+        return;
+    }
     container.innerHTML = '';
     
     // Filter supplements
@@ -149,25 +166,56 @@ function renderSupplements() {
         switch (appState.sortBy) {
             case 'name':
                 return a.name.localeCompare(b.name);
-            case 'safetyRating':
-                return b.safetyRating - a.safetyRating;
-            case 'evidence':
+            case 'antiInflammatory':
             default:
-                return b.evidence.score - a.evidence.score;
+                return b.antiInflammatoryPotential - a.antiInflammatoryPotential;
         }
     });
     
     // Update container class based on view
     container.className = appState.currentView === 'grid' ? 'supplements-grid' : 'supplements-list';
     
-    // Render each supplement
-    filteredSupplements.forEach(supplement => {
+    // Render each supplement with product banners
+    filteredSupplements.forEach((supplement, index) => {
         const element = createSupplementElement(supplement);
         container.appendChild(element);
+        
+        // Add product banner after every 6 supplements
+        if ((index + 1) % 6 === 0) {
+            const banner = createProductBanner();
+            container.appendChild(banner);
+        }
     });
+    
+    // Also add a banner at the end if:
+    // - There are supplements shown AND
+    // - The last banner wasn't just added (not divisible by 6)
+    if (filteredSupplements.length > 0 && filteredSupplements.length % 6 !== 0) {
+        const banner = createProductBanner();
+        container.appendChild(banner);
+    }
     
     // Update icons
     lucide.createIcons();
+}
+
+// Create product banner
+function createProductBanner() {
+    const banner = document.createElement('a');
+    banner.href = 'https://corhealth.com/#product';
+    banner.className = 'product-banner';
+    banner.style.gridColumn = '1 / -1'; // Span full width in grid
+    banner.innerHTML = `
+        <div class="product-banner-content">
+            <div class="product-banner-text">
+                Get the One™ and get clear, actionable data about your inflammation
+            </div>
+            <div class="product-banner-arrow">
+                <i data-lucide="arrow-right"></i>
+            </div>
+        </div>
+    `;
+    return banner;
 }
 
 // Create supplement element
@@ -196,15 +244,21 @@ function createSupplementElement(supplement) {
         addBtn.classList.add('in-stack');
     }
     
-    // Add event listeners
-    element.querySelector('.supplement-header .view-details-btn').addEventListener('click', () => showSupplementDetails(supplement));
-    addBtn.addEventListener('click', () => {
-        if (inStack) {
-            removeFromStack(supplement.id);
-        } else {
-            addToStack(supplement);
-        }
-    });
+    // Add event listeners - handle both grid and list views
+    const detailsBtn = element.querySelector('.view-details-btn');
+    if (detailsBtn) {
+        detailsBtn.addEventListener('click', () => showSupplementDetails(supplement));
+    }
+    
+    if (addBtn) {
+        addBtn.addEventListener('click', () => {
+            if (inStack) {
+                removeFromStack(supplement.id);
+            } else {
+                addToStack(supplement);
+            }
+        });
+    }
     
     return element;
 }

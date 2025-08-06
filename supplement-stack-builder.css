@@ -191,7 +191,12 @@ body {
     background-color: white;
     border-radius: 6px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .view-button:hover {
@@ -207,6 +212,7 @@ body {
 .view-button svg {
     width: 20px;
     height: 20px;
+    display: block;
 }
 
 /* Category Filters */
@@ -361,7 +367,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
 }
 
 .list-item-info {
@@ -846,15 +851,24 @@ body {
     .tab-navigation {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
-        gap: 1rem;
-    }
-    
-    .tab-button span {
-        display: none; /* Hide text on mobile, show only icons */
+        gap: 0.5rem;
     }
     
     .tab-button {
-        padding: 1rem;
+        padding: 0.8rem 1rem;
+        flex-direction: column;
+        gap: 0.4rem;
+        font-size: 1.2rem;
+    }
+    
+    .tab-button span {
+        display: block; /* Show text on mobile */
+        white-space: nowrap;
+    }
+    
+    .tab-button svg {
+        width: 18px;
+        height: 18px;
     }
     
     .controls-bar {
@@ -929,12 +943,12 @@ body {
     }
     
     .tab-button {
-        font-size: 1.4rem;
-        padding: 1rem 1.5rem;
+        font-size: 1.1rem;
+        padding: 0.7rem 0.8rem;
     }
     
     .tab-button span {
-        display: inline; /* Show text on smaller mobile */
+        display: block; /* Keep text visible on smaller mobile */
     }
     
     .supplement-name {
@@ -964,14 +978,107 @@ body {
     }
 }
 
-/* Extra small mobile - 480px */
-@media (max-width: 480px) {
-    .tab-button span {
-        display: none; /* Hide text on very small screens */
+/* Product Banner */
+.product-banner {
+    background-color: #C0EBFA;
+    padding: 2.5rem 3rem;
+    margin: 3rem 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: rgb(4, 61, 85);
+    border-radius: 12px;
+    grid-column: 1 / -1;
+    width: 100%;
+}
+
+.product-banner:hover {
+    background-color: #b3e2f5;
+    transform: translateX(2px);
+}
+
+.product-banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    max-width: 114rem;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.product-banner-text {
+    font-size: 1.8rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: rgb(4, 61, 85);
+}
+
+.product-banner-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.product-banner:hover .product-banner-arrow {
+    background-color: rgba(255, 255, 255, 0.8);
+    transform: translateX(5px);
+}
+
+.product-banner-arrow svg {
+    width: 24px;
+    height: 24px;
+    color: rgb(4, 61, 85);
+}
+
+/* Banner in list view */
+.supplements-list .product-banner {
+    margin: 2rem 0;
+}
+
+/* Responsive adjustments for banner */
+@media (max-width: 768px) {
+    .product-banner {
+        padding: 2rem 2rem;
+        margin: 2rem 0;
+        width: 100%;
     }
     
+    .product-banner-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .product-banner-text {
+        font-size: 1.6rem;
+    }
+}
+
+/* Extra small mobile - 480px */
+@media (max-width: 480px) {
     .tab-button {
-        padding: 0.8rem;
+        padding: 0.6rem;
+        font-size: 1rem;
+    }
+    
+    .tab-button span {
+        display: block; /* Keep labels visible even on very small screens */
+        font-size: 0.9rem;
+    }
+    
+    .tab-button svg {
+        width: 16px;
+        height: 16px;
     }
     
     .supplement-card {
@@ -981,5 +1088,9 @@ body {
     .modal-content {
         margin: 1rem;
         max-height: 95vh;
+    }
+    
+    .product-banner-text {
+        font-size: 1.4rem;
     }
 }
